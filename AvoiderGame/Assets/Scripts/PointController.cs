@@ -10,28 +10,46 @@ public class PointController : MonoBehaviour
     public float moveSpeed = 0;
     
     private Vector2 direction = Vector2.zero;
+    private Vector3 initialScale;
+
+    private bool isGameActive = true;
+
 
     public void Init(DIRECTION directionToMove)
     {
         direction = GridManager.DirectionToVector(directionToMove);
     }
 
+    void Start()
+    {
+        initialScale = transform.localScale;
+    }
+
     void Update()
     {
-        // Update timer
-        if (lifetime <= 0)
+        if (isGameActive)
         {
-            Destroy(gameObject);
+            // Update timer
+            if (lifetime <= 0)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                lifetime -= Time.deltaTime;
+            }
+
+            // Update movement
+            Vector2 position = transform.position;
+            position += direction * moveSpeed * Time.deltaTime;
+            transform.position = position;
         }
         else
         {
-            lifetime -= Time.deltaTime;
+            float postGameSeconds = GameTimeManager.GetInstance().finishTimeSeconds;
+            float currentSeconds = GameTimeManager.GetInstance().GetCurrentGameTime();
+            transform.localScale = initialScale * (1 - (postGameSeconds - currentSeconds)/postGameSeconds);
         }
-
-        // Update movement
-        Vector2 position = transform.position;
-        position += direction * moveSpeed * Time.deltaTime;
-        transform.position = position;
     }
 
     public void OnTriggerEnter2D(Collider2D other)
@@ -44,6 +62,11 @@ public class PointController : MonoBehaviour
 
             Destroy(gameObject);
         }
+    }
+
+    public void OnGameEnd()
+    {
+        isGameActive = false;
     }
 
 } // end of class PointController.cpp

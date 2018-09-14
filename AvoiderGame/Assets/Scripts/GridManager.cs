@@ -123,8 +123,6 @@ public class GridManager : MonoBehaviour
 
     public void MovePlayerToLocation(PlayerController player, GridLocation location)
     {
-        Debug.Log("MOVE " + location.row + "," + location.col);
-
         // Update grid
         grid[location.row][location.col] = player;
         playerPositions[player] = location;
@@ -197,6 +195,11 @@ public class GridManager : MonoBehaviour
         }
 
         return dir;
+    }
+
+    public static DIRECTION GetRandomDirection()
+    {
+        return (DIRECTION)(Random.Range(0, 4));
     }
 
 } // end of class PlayerMovementManager.cpp
