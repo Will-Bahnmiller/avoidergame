@@ -11,6 +11,7 @@ public class ScoreTextController : MonoBehaviour
     public GameObject titleText;
 
     private INTEGERVAR playerVariable = INTEGERVAR.player_one_score;
+    private bool isPlayerAlive = false;
 
 
     void Awake()
@@ -28,8 +29,16 @@ public class ScoreTextController : MonoBehaviour
 
     void Start()
     {
-        // Turn off second player score if only one player is playing
-        if (playerNumber == 2 && GlobalVariableManager.GetIntegerVariable(INTEGERVAR.player_count) == 1)
+        // Turn off player's score if not playing
+        if (playerNumber == 1)
+        {
+            isPlayerAlive = (GlobalVariableManager.GetIntegerVariable(INTEGERVAR.is_player_one_alive) == 1);
+        }
+        else if (playerNumber == 2)
+        {
+            isPlayerAlive = (GlobalVariableManager.GetIntegerVariable(INTEGERVAR.is_player_two_alive) == 1);
+        }
+        if (!isPlayerAlive)
         {
             titleText.SetActive(false);
             gameObject.SetActive(false);
@@ -38,8 +47,10 @@ public class ScoreTextController : MonoBehaviour
 
     void Update()
     {
-        int currentScore = GlobalVariableManager.GetIntegerVariable(playerVariable);
-
-        scoreText.text = currentScore.ToString("00000");
+        if (isPlayerAlive)
+        {
+            int currentScore = GlobalVariableManager.GetIntegerVariable(playerVariable);
+            scoreText.text = currentScore.ToString("00000");
+        }
     }
 }

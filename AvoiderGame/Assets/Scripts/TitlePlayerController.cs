@@ -8,7 +8,7 @@ public enum TITLEOPTION
     inactive,
     color,
     ready,
-    play
+    backout
 }
 
 public class TitlePlayerController : MonoBehaviour
@@ -29,13 +29,16 @@ public class TitlePlayerController : MonoBehaviour
     public GameObject readyImage;
     public Sprite readyCheckedImage;
     public Sprite readyUncheckedImage;
-    public RectTransform playImage;
+    public GameObject backoutImage;
+
+    public StartGameTextController startGameText;
 
     private TITLEOPTION currentOption = TITLEOPTION.inactive;
     private VECTORVAR colorOption = VECTORVAR.player_one_color;
     private int currentColorIndex = 0;
 
     private bool isReady = false;
+    private bool isAlive = false;
 
 
     void Start()
@@ -63,9 +66,7 @@ public class TitlePlayerController : MonoBehaviour
             case TITLEOPTION.inactive:
                 if (AnyButtonDown())
                 {
-                    inactiveTextHolder.SetActive(false);
-                    activeTextHolder.SetActive(true);
-                    currentOption = TITLEOPTION.color;
+                    SetPlayerAlive(true);
                 }
                 break;
 
@@ -94,26 +95,27 @@ public class TitlePlayerController : MonoBehaviour
             case TITLEOPTION.ready:
                 if (Input.GetKeyDown(selectKey))
                 {
-                    isReady = !isReady;
-                    Debug.Log(isReady);
-                    readyImage.GetComponent<Image>().sprite = (isReady) ? readyCheckedImage : readyUncheckedImage;
+                    SetPlayerReady(!isReady);
                 }
-                if (Input.GetKeyDown(moveKeyUp))
+                if (!isReady)
                 {
-                    currentOption = TITLEOPTION.color;
-                    MoveToColor(currentColorIndex);
-                }
-                if (Input.GetKeyDown(moveKeyDown) && isReady)
-                {
-                    currentOption = TITLEOPTION.play;
-                    MoveToPlay();
+                    if (Input.GetKeyDown(moveKeyUp))
+                    {
+                        currentOption = TITLEOPTION.color;
+                        MoveToColor(currentColorIndex);
+                    }
+                    if (Input.GetKeyDown(moveKeyDown))
+                    {
+                        currentOption = TITLEOPTION.backout;
+                        MoveToBackout();
+                    }
                 }
                 break;
 
-            case TITLEOPTION.play:
+            case TITLEOPTION.backout:
                 if (Input.GetKeyDown(selectKey))
                 {
-                    PlayTheGame();
+                    SetPlayerAlive(false);
                 }
                 if (Input.GetKeyDown(moveKeyUp))
                 {
@@ -131,6 +133,60 @@ public class TitlePlayerController : MonoBehaviour
             || Input.GetKeyDown(moveKeyLeft)
             || Input.GetKeyDown(moveKeyRight)
             || Input.GetKeyDown(selectKey);
+    }
+
+    public void Unready()
+    {
+        if (isReady)
+        {
+            SetPlayerReady(false);
+        }
+    }
+
+    public bool IsPlayerAlive()
+    {
+        return isAlive;
+    }
+
+    public Color GetPlayerSelectedColor()
+    {
+        return currentColorImage.color;
+    }
+
+    private void SetPlayerReady(bool value)
+    {
+        isReady = value;
+
+        readyImage.GetComponent<Image>().sprite = (isReady) ? readyCheckedImage : readyUncheckedImage;
+
+        if (isReady)
+        {
+            startGameText.PlayerReady();
+        }
+        else
+        {
+            startGameText.PlayerUnready();
+        }
+    }
+
+    private void SetPlayerAlive(bool value)
+    {
+        isAlive = value;
+
+        inactiveTextHolder.SetActive(!isAlive);
+        activeTextHolder.SetActive(isAlive);
+
+        currentOption = (isAlive) ? TITLEOPTION.color : TITLEOPTION.inactive;
+        MoveToColor(currentColorIndex);
+
+        if (isAlive)
+        {
+            startGameText.PlayerActive();
+        }
+        else
+        {
+            startGameText.PlayerUnactive();
+        }
     }
 
     private void SelectColor(int colorIndex)
@@ -156,13 +212,8 @@ public class TitlePlayerController : MonoBehaviour
         selector.localPosition = readyImage.GetComponent<RectTransform>().localPosition;
     }
 
-    private void MoveToPlay()
+    private void MoveToBackout()
     {
-        selector.position = playImage.GetComponent<RectTransform>().localPosition;
-    }
-
-    private void PlayTheGame()
-    {
-        ///TODO
+        selector.localPosition = backoutImage.GetComponent<RectTransform>().localPosition;
     }
 }

@@ -4,7 +4,9 @@ using UnityEngine;
 
 public enum INTEGERVAR
 {
-    player_count,       ///TODO: change to isPlayerOneReady and isPlayerTwoReady
+    player_count,
+    is_player_one_alive,
+    is_player_two_alive,
     player_one_score,
     player_two_score,
     MAX

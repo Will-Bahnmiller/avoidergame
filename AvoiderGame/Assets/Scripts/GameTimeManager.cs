@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public enum GAMESTATE
 {
@@ -16,6 +17,8 @@ public class GameTimeManager : MonoBehaviour
     public float readyTimeSeconds = 3;
     public float gameTimeSeconds = 60;
     public float finishTimeSeconds = 5;
+
+    public string postgameSceneName = "postgame";
 
     public static UnityAction OnGameStart;
     public static UnityAction OnGameEnd;
@@ -71,7 +74,7 @@ public class GameTimeManager : MonoBehaviour
                     case GAMESTATE.postgame:
                         gameTimer = 0;
                         isTimerActive = false;
-                        ///TODO: transition to high scores screen
+                        SceneManager.LoadScene(postgameSceneName);
                         break;
                 }
             }
