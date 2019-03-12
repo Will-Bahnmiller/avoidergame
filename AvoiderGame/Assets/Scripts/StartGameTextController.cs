@@ -14,7 +14,8 @@ public class StartGameTextController : MonoBehaviour
 
     public TitlePlayerController playerOne;
     public TitlePlayerController playerTwo;
-    
+
+    private bool countdown = false;
     private float countdownTimer = -1;
     private int numPlayersAlive = 0;
     private int numPlayersReady = 0;
@@ -28,7 +29,7 @@ public class StartGameTextController : MonoBehaviour
 
     void Update()
     {
-        if (countdownTimer > 0)
+        if (countdown)
         {
             countdownTimer -= Time.deltaTime;
 
@@ -90,12 +91,15 @@ public class StartGameTextController : MonoBehaviour
 
     private void BeginCountdown()
     {
+        countdown = true;
         countdownTimer = countdownDuration;
         countdownText.enabled = true;
     }
 
     private void CancelCountdown()
     {
+        countdown = false;
+        countdownTimer = countdownDuration;
         countdownText.enabled = false;
 
         playerOne.Unready();

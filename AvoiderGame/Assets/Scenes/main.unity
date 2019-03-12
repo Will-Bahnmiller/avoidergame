@@ -125,6 +125,7 @@ GameObject:
   - component: {fileID: 129993945}
   - component: {fileID: 129993944}
   - component: {fileID: 129993943}
+  - component: {fileID: 129993948}
   m_Layer: 0
   m_Name: Player2
   m_TagString: Untagged
@@ -149,7 +150,6 @@ MonoBehaviour:
   moveKeyDown: 274
   moveKeyLeft: 276
   moveKeyRight: 275
-  playerSprite: {fileID: 129993946}
 --- !u!61 &129993944
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -259,6 +259,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &129993948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 129993942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f390fba34b873d49b3b7605434f123d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerNumber: 2
+  playerSprite: {fileID: 129993946}
+  playerImage: {fileID: 0}
 --- !u!1 &141987384
 GameObject:
   m_ObjectHideFlags: 0
@@ -459,6 +474,7 @@ MonoBehaviour:
   playerNumber: 1
   scoreText: {fileID: 150396169}
   titleText: {fileID: 885884271}
+  displayName: 0
 --- !u!1 &865021878
 GameObject:
   m_ObjectHideFlags: 0
@@ -810,6 +826,7 @@ GameObject:
   - component: {fileID: 1173743421}
   - component: {fileID: 1173743420}
   - component: {fileID: 1173743417}
+  - component: {fileID: 1173743422}
   m_Layer: 0
   m_Name: Player1
   m_TagString: Untagged
@@ -834,7 +851,6 @@ MonoBehaviour:
   moveKeyDown: 115
   moveKeyLeft: 97
   moveKeyRight: 100
-  playerSprite: {fileID: 1173743418}
 --- !u!212 &1173743418
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -944,6 +960,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1173743422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173743416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f390fba34b873d49b3b7605434f123d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerNumber: 1
+  playerSprite: {fileID: 1173743418}
+  playerImage: {fileID: 0}
 --- !u!1 &1212780976
 GameObject:
   m_ObjectHideFlags: 0
@@ -958,6 +989,7 @@ GameObject:
   - component: {fileID: 1212780980}
   - component: {fileID: 1212780981}
   - component: {fileID: 1212780982}
+  - component: {fileID: 1212780983}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1052,6 +1084,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   readyText: {fileID: 2123371841}
   finishText: {fileID: 1405701987}
+--- !u!114 &1212780983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1212780976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95a1f8a07af9f0c489dde359d5e0d117, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topScoresLimit: 10
 --- !u!1 &1358783775
 GameObject:
   m_ObjectHideFlags: 0
@@ -1147,6 +1192,7 @@ MonoBehaviour:
   playerNumber: 2
   scoreText: {fileID: 1358783777}
   titleText: {fileID: 1930524630}
+  displayName: 0
 --- !u!1 &1405701985
 GameObject:
   m_ObjectHideFlags: 0

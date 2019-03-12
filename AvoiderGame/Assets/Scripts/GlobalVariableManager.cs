@@ -19,6 +19,11 @@ public enum VECTORVAR
     MAX
 }
 
+public enum STRINGVAR
+{
+    MAX
+}
+
 public class GlobalVariableManager : MonoBehaviour
 {
     void Awake()
@@ -39,6 +44,11 @@ public class GlobalVariableManager : MonoBehaviour
 
             vectorVariables.Add(new Vector3(x, y, z));
         }
+
+        for (int i = 0; i < (int)(STRINGVAR.MAX); ++i)
+        {
+            stringVariables.Add( PlayerPrefs.GetString(StringVarToString((STRINGVAR)(i))) );
+        }
     }
 
     void OnDestroy()
@@ -53,6 +63,10 @@ public class GlobalVariableManager : MonoBehaviour
             PlayerPrefs.SetFloat(VectorVarToString((VECTORVAR)(i), 2), vectorVariables[i].y);
             PlayerPrefs.SetFloat(VectorVarToString((VECTORVAR)(i), 3), vectorVariables[i].z);
         }
+        for (int i = 0; i < (int)(STRINGVAR.MAX); ++i)
+        {
+            PlayerPrefs.SetString(StringVarToString((STRINGVAR)(i)), stringVariables[i]);
+        }
 
         PlayerPrefs.Save();
     }
@@ -65,6 +79,11 @@ public class GlobalVariableManager : MonoBehaviour
     public static string VectorVarToString(VECTORVAR variable, int element)
     {
         return ("VEC" + ((int)(variable)).ToString() + element.ToString());
+    }
+
+    public static string StringVarToString(STRINGVAR variable)
+    {
+        return ("STR" + ((int)(variable)).ToString());
     }
 
     private static List<int> integerVariables = new List<int>();
@@ -116,6 +135,32 @@ public class GlobalVariableManager : MonoBehaviour
         else
         {
             Debug.LogError("SetVectorVariable: Trying to get MAX index!");
+        }
+    }
+
+    private static List<string> stringVariables = new List<string>();
+    public static string GetStringVariable(STRINGVAR variable)
+    {
+        if (variable < STRINGVAR.MAX)
+        {
+            return stringVariables[(int)variable];
+        }
+        else
+        {
+            Debug.LogError("GetStringVariable: Trying to get MAX index!");
+            return "";
+        }
+    }
+
+    public static void SetStringVariable(STRINGVAR variable, string value)
+    {
+        if (variable < STRINGVAR.MAX)
+        {
+            stringVariables[(int)variable] = value;
+        }
+        else
+        {
+            Debug.LogError("SetStringVariable: Trying to get MAX index!");
         }
     }
 

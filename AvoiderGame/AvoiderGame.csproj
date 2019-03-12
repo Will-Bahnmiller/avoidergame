@@ -296,13 +296,13 @@
       <Project>{6877705C-FBD9-0C4F-5AFB-6FB431E5D39D}</Project>
       <Name>Unity.PackageManagerUI.Editor</Name>
     </ProjectReference>
-    <ProjectReference Include="Unity.TextMeshPro.csproj">
-      <Project>{07A21C90-D344-AE1A-8456-9910C203B41A}</Project>
-      <Name>Unity.TextMeshPro</Name>
-    </ProjectReference>
     <ProjectReference Include="Unity.CollabProxy.Editor.csproj">
       <Project>{C12CEEC6-100C-58A2-DE36-314E4DE5E40B}</Project>
       <Name>Unity.CollabProxy.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.TextMeshPro.csproj">
+      <Project>{07A21C90-D344-AE1A-8456-9910C203B41A}</Project>
+      <Name>Unity.TextMeshPro</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Analytics.DataPrivacy.csproj">
       <Project>{D6E266C6-3D1F-28C8-9FEB-2A01E44DBF77}</Project>
@@ -314,12 +314,19 @@
     <Compile Include="Assets\Scripts\GameTimeManager.cs" />
     <Compile Include="Assets\Scripts\GlobalVariableManager.cs" />
     <Compile Include="Assets\Scripts\GridManager.cs" />
+    <Compile Include="Assets\Scripts\HideInactivePlayerInfoComponent.cs" />
+    <Compile Include="Assets\Scripts\HighscoresManager.cs" />
+    <Compile Include="Assets\Scripts\HighscoresTextController.cs" />
+    <Compile Include="Assets\Scripts\NameSelectorController.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\PlayerSpriteColorController.cs" />
     <Compile Include="Assets\Scripts\PointController.cs" />
     <Compile Include="Assets\Scripts\PointsManager.cs" />
+    <Compile Include="Assets\Scripts\PostgameContinueController.cs" />
+    <Compile Include="Assets\Scripts\ResetPlayerScores.cs" />
     <Compile Include="Assets\Scripts\ScoreTextController.cs" />
+    <Compile Include="Assets\Scripts\StartGameTextController.cs" />
     <Compile Include="Assets\Scripts\TimerTextController.cs" />
-    <Compile Include="Assets\Scripts\TitleController.cs" />
     <Compile Include="Assets\Scripts\TitlePlayerController.cs" />
   </ItemGroup>
   <ItemGroup>

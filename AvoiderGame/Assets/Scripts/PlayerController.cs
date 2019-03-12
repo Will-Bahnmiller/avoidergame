@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,8 +11,6 @@ public class PlayerController : MonoBehaviour
     public KeyCode moveKeyDown;
     public KeyCode moveKeyLeft;
     public KeyCode moveKeyRight;
-
-    public SpriteRenderer playerSprite;
 
     private GridManager gridManager = null;
 
@@ -66,18 +63,6 @@ public class PlayerController : MonoBehaviour
 
             GameTimeManager.OnGameStart += gameStartAction;
             GameTimeManager.OnGameEnd += gameEndAction;
-
-            Vector3 playerOneColor = GlobalVariableManager.GetVectorVariable(VECTORVAR.player_one_color);
-            Vector3 playerTwoColor = GlobalVariableManager.GetVectorVariable(VECTORVAR.player_two_color);
-
-            if (playerNumber == 1)
-            {
-                playerSprite.color = new Color(playerOneColor.x, playerOneColor.y, playerOneColor.z);
-            }
-            else if (playerNumber == 2)
-            {
-                playerSprite.color = new Color(playerTwoColor.x, playerTwoColor.y, playerTwoColor.z);
-            }
         }
     }
 

@@ -14,6 +14,7 @@ public enum TITLEOPTION
 public class TitlePlayerController : MonoBehaviour
 {
     public int playerNumber = 1;
+    public TitlePlayerController otherPlayer;
 
     public KeyCode moveKeyUp;
     public KeyCode moveKeyDown;
@@ -25,6 +26,7 @@ public class TitlePlayerController : MonoBehaviour
     public GameObject activeTextHolder;
     public RectTransform selector;
     public List<GameObject> colorImages;
+    public GameObject disabledColorImage;
     public Image currentColorImage;
     public GameObject readyImage;
     public Sprite readyCheckedImage;
@@ -36,6 +38,7 @@ public class TitlePlayerController : MonoBehaviour
     private TITLEOPTION currentOption = TITLEOPTION.inactive;
     private VECTORVAR colorOption = VECTORVAR.player_one_color;
     private int currentColorIndex = 0;
+    private int selectedColorIndex = -1;
 
     private bool isReady = false;
     private bool isAlive = false;
@@ -73,12 +76,36 @@ public class TitlePlayerController : MonoBehaviour
             case TITLEOPTION.color:
                 if (Input.GetKeyDown(moveKeyLeft))
                 {
-                    currentColorIndex = Mathf.Max(0, currentColorIndex-1);
+                    --currentColorIndex;
+                    if (currentColorIndex < 0)
+                    {
+                        currentColorIndex = colorImages.Count - 1;
+                    }
+                    if (otherPlayer.IsPlayerAlive() && currentColorIndex == otherPlayer.GetPlayerSelectedColorIndex())
+                    {
+                        --currentColorIndex;
+                        if (currentColorIndex < 0)
+                        {
+                            currentColorIndex = colorImages.Count - 1;
+                        }
+                    }
                     MoveToColor(currentColorIndex);
                 }
                 if (Input.GetKeyDown(moveKeyRight))
                 {
-                    currentColorIndex = Mathf.Min(colorImages.Count-1, currentColorIndex+1);
+                    ++currentColorIndex;
+                    if (currentColorIndex >= colorImages.Count)
+                    {
+                        currentColorIndex = 0;
+                    }
+                    if (otherPlayer.IsPlayerAlive() && currentColorIndex == otherPlayer.GetPlayerSelectedColorIndex())
+                    {
+                        ++currentColorIndex;
+                        if (currentColorIndex >= colorImages.Count)
+                        {
+                            currentColorIndex = 0;
+                        }
+                    }
                     MoveToColor(currentColorIndex);
                 }
                 if (Input.GetKeyDown(moveKeyDown))
@@ -153,6 +180,11 @@ public class TitlePlayerController : MonoBehaviour
         return currentColorImage.color;
     }
 
+    public int GetPlayerSelectedColorIndex()
+    {
+        return selectedColorIndex;
+    }
+
     private void SetPlayerReady(bool value)
     {
         isReady = value;
@@ -177,7 +209,30 @@ public class TitlePlayerController : MonoBehaviour
         activeTextHolder.SetActive(isAlive);
 
         currentOption = (isAlive) ? TITLEOPTION.color : TITLEOPTION.inactive;
-        MoveToColor(currentColorIndex);
+
+        if (!otherPlayer.IsPlayerAlive())
+        {
+            MoveToColor(currentColorIndex);
+        }
+        else
+        {
+            if (SelectColor(currentColorIndex))
+            {
+                MoveToColor(currentColorIndex);
+            }
+            else
+            {
+                int nextColor = currentColorIndex + 1;
+                if (nextColor >= colorImages.Count)
+                {
+                    nextColor = 0;
+                }
+                SelectColor(nextColor);
+                MoveToColor(nextColor);
+            }
+        }
+
+        otherPlayer.OtherPlayerAlive(value);
 
         if (isAlive)
         {
@@ -189,16 +244,46 @@ public class TitlePlayerController : MonoBehaviour
         }
     }
 
-    private void SelectColor(int colorIndex)
+    public void OtherPlayerAlive(bool value)
     {
-        currentColorImage.color = colorImages[colorIndex].GetComponent<Image>().color;
+        disabledColorImage.SetActive(value);
+    }
 
-        Vector3 color = new Vector3();
-        color.x = currentColorImage.color.r;
-        color.y = currentColorImage.color.g;
-        color.z = currentColorImage.color.b;
+    private bool SelectColor(int colorIndex)
+    {
+        if (!otherPlayer.IsPlayerAlive() || otherPlayer.GetPlayerSelectedColorIndex() != colorIndex)
+        {
+            selectedColorIndex = colorIndex;
+            currentColorImage.color = colorImages[colorIndex].GetComponent<Image>().color;
 
-        GlobalVariableManager.SetVectorVariable(colorOption, color);
+            Vector3 color = new Vector3();
+            color.x = currentColorImage.color.r;
+            color.y = currentColorImage.color.g;
+            color.z = currentColorImage.color.b;
+
+            GlobalVariableManager.SetVectorVariable(colorOption, color);
+
+            otherPlayer.OtherPlayerSelectColor(colorIndex);
+
+            return true;
+        }
+        return false;
+    }
+
+    public void OtherPlayerSelectColor(int colorIndex)
+    {
+        disabledColorImage.transform.localPosition = colorImages[colorIndex].transform.localPosition;
+
+        if (currentColorIndex == colorIndex)
+        {
+            int nextColor = currentColorIndex + 1;
+            if (nextColor >= colorImages.Count)
+            {
+                nextColor = 0;
+            }
+            currentColorIndex = nextColor;
+            MoveToColor(nextColor);
+        }
     }
 
     private void MoveToColor(int colorIndex)

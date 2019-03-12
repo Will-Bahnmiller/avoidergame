@@ -10,6 +10,8 @@ public class ScoreTextController : MonoBehaviour
     public Text scoreText;
     public GameObject titleText;
 
+    public bool displayName = false;
+
     private INTEGERVAR playerVariable = INTEGERVAR.player_one_score;
     private bool isPlayerAlive = false;
 
@@ -43,14 +45,21 @@ public class ScoreTextController : MonoBehaviour
             titleText.SetActive(false);
             gameObject.SetActive(false);
         }
+
+        SetScoreText(0);
     }
 
     void Update()
     {
         if (isPlayerAlive)
         {
-            int currentScore = GlobalVariableManager.GetIntegerVariable(playerVariable);
-            scoreText.text = currentScore.ToString("00000");
+            SetScoreText(GlobalVariableManager.GetIntegerVariable(playerVariable));
         }
+    }
+
+    private void SetScoreText(int score)
+    {
+        string scoreStr = score.ToString("00000");
+        scoreText.text = (displayName) ? "Player " + playerNumber + ": " + scoreStr : scoreStr;
     }
 }
